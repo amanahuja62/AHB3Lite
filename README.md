@@ -1,1 +1,1 @@
-This is currently ongoing project. The code for AHB Master has been successfully created. 
+This project contains rtl code for AHB3 Lite Master
