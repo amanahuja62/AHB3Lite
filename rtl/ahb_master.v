@@ -126,33 +126,47 @@ module ahb_master(
 									 
 									'h84: begin
 											  HTRANS<=iHTRANS;
-											  HADDR<=nextAddress(HSIZE, HBURST, HADDR);
+											  HADDR<=nextAddress(HSIZE, HBURST, HADDR, HTRANS);
 											end
 									'hFE: begin
-									       
-													HADDR<=iHADDR;
-													HWRITE<=iHWRITE;
-													HSIZE<=iHSIZE;
-													HBURST<=iHBURST;
-													HPROT<=iHPROT;
-													HTRANS<=iHTRANS;
-													HMASTLOCK<=iHMASTLOCK;
+									        if(iHTRANS==NONSEQ || iHTRANS==IDLE) begin
+														HADDR<=iHADDR;
+														HWRITE<=iHWRITE;
+														HSIZE<=iHSIZE;
+														HBURST<=iHBURST;
+														HPROT<=iHPROT;
+														HTRANS<=iHTRANS;
+														HMASTLOCK<=iHMASTLOCK;
+												end
+												
+												else begin 
+														HTRANS<=iHTRANS;
+														HADDR<=nextAddress(HSIZE, HBURST, HADDR, HTRANS);
+												end
 																								
 											end
 									 'hFF: begin
-												HADDR<=iHADDR;
-												HWRITE<=iHWRITE;
-												HSIZE<=iHSIZE;
-												HBURST<=iHBURST;
-												HPROT<=iHPROT;
-												HTRANS<=iHTRANS;
-												HMASTLOCK<=iHMASTLOCK;
-												HWDATA<=iHWDATA;
+													if(iHTRANS==NONSEQ || iHTRANS==IDLE) begin
+															HADDR<=iHADDR;
+															HWRITE<=iHWRITE;
+															HSIZE<=iHSIZE;
+															HBURST<=iHBURST;
+															HPROT<=iHPROT;
+															HTRANS<=iHTRANS;
+															HMASTLOCK<=iHMASTLOCK;
+															HWDATA<=iHWDATA;
+													end
+													
+													else begin
+														   HTRANS<=iHTRANS;
+															HADDR<=nextAddress(HSIZE, HBURST, HADDR, HTRANS);
+															HWDATA<=iHWDATA;
+													end
 											 end
 									  
 									  'h85: begin
 												 HTRANS<=iHTRANS;
-												 HADDR<=nextAddress(HSIZE, HBURST, HADDR);
+												 HADDR<=nextAddress(HSIZE, HBURST, HADDR, HTRANS);
 												 HWDATA<=iHWDATA;										 
 											  end
 									 
@@ -384,13 +398,14 @@ module ahb_master(
 		     input[2:0] hsize;
 			  input[2:0] hburst;
 			  input[31:0] addr;
+			  input[1:0] htrans;
 			  reg[12:0] burstBytes;//local variables
 			  reg[31:0] wrapBoundary;
 			  reg[31:0] wrapStart;
 						
 					begin
-					
-						if(hburst!=BUSY) begin
+					   nextAddress=addr;
+						if(htrans!=BUSY) begin
 								if(hburst==INCR || hburst==INCR4 || hburst==INCR8 || hburst==INCR16)
 									nextAddress=addr+2**hsize;									 
 									 
