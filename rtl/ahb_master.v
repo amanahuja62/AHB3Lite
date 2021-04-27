@@ -448,7 +448,7 @@ module ahb_master(
 				  input[1:0] htrans;
 				  reg[12:0] burstBytes;//local variables
 				  reg[31:0] wrapBoundary;
-				  reg[31:0] wrapStart;
+        reg[31:0] wrapStart; 
 							
 						begin
 							nextAddress=addr;
