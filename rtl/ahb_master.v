@@ -448,7 +448,7 @@ module ahb_master(
             // function to identify address for next beat in a burst
             function[ADDR_WIDTH-1:0] nextAddress;
                   input[2:0] hsize;
-                  input[2:0] hburst;
+                  input[2:0] hburst; 
                   input[ADDR_WIDTH:0] addr;
                   input[1:0] htrans;
                   reg[12:0] burstBytes;//local variables
