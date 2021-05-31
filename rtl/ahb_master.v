@@ -240,9 +240,9 @@ module ahb_master(
                         s_fbtr: begin
                                      if(HREADY) begin
                                             if(beatCounter==countLimit-1) begin
-                                                    sampleData=1;
-                                                    driveEnable='hfe;
-                                                    nextStateDecider(iHTRANS,iHBURST,iHWRITE,n_state,resetBC,set3,set7,set15);
+                                               sampleData=1;
+                                               driveEnable='hfe;
+                                               nextStateDecider(iHTRANS,iHBURST,iHWRITE,n_state,resetBC,set3,set7,set15);
                                                     
                                             end
                                             
@@ -251,10 +251,8 @@ module ahb_master(
                                                 driveEnable='h84;
                                                 sampleData=1;
                                                if(hisReg[2:1]==SEQ || hisReg[2:1]==NONSEQ) 
-                                                    incBC=1;
-                                                            
-                                                n_state=s_fbtr;                 
-                                                        
+                                                  incBC=1;                                                            
+                                               n_state=s_fbtr;                                       
                                                 
                                             end 
                                      
